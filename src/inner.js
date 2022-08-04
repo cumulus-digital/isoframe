@@ -13,7 +13,7 @@ const main = () => {
 	const Promise = window.Promise;
 
 	// jQuery loader
-	const jqueryLoader = () => {
+	DOC.defaultView.jQueryLoader = () => {
 		return new Promise((resolve, reject) => {
 			if (window.hasOwnProperty('jQuery')) {
 				return resolve();
@@ -29,7 +29,7 @@ const main = () => {
 			);
 		});
 	};
-	jqueryLoader().then(() => {
+	DOC.defaultView.jQueryLoader().then(() => {
 		const $ = window.jQuery;
 
 		$(() => {
