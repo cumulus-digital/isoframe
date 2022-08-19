@@ -54,6 +54,13 @@ const main = () => {
 					DOC.defaultView.parentIFrame.reset();
 				}
 			});
+
+			// Install Bands in Town script if needed
+			if (
+				$('a[href*="bandsintown.com"],a.bit-widget-initializer').length
+			) {
+				$.getScript('https://widget.bandsintown.com/main.min.js');
+			}
 		});
 	});
 
