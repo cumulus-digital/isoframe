@@ -112,7 +112,6 @@ const main = () => {
 				const g = parentWindow.googletag;
 				const gpa = g.pubads;
 				let adPath = null;
-				let targetingKeys = null;
 
 				// Discover adpath
 				const slots = gpa()?.getSlots();
@@ -138,25 +137,21 @@ const main = () => {
 
 				console.log('ISOFRAME: Adpath found', adPath);
 
-				// Find parent's global targeting keys
-				targetingKeys = gpa().getTargetingKeys();
-				if (targetingKeys?.length) {
-					googletag.cmd.push(() => {
+				// Set up GPT slot
+				googletag.cmd.push(function () {
+					const targetingKeys = googletag.pubads().getTargetingKeys();
+					if (targetingKeys?.length) {
 						console.log(
 							'ISOFRAME: Setting page-level targeting keys',
 							targetingKeys
 						);
 						targetingKeys.forEach((key) => {
-							const t = gpa().getTargeting(key);
+							const t = googletag.pubads().getTargeting(key);
 							googletag.pubads().setTargeting(key, t);
 						});
-					});
-				}
-
-				// Set up GPT slot
-				googletag.cmd.push(() => {
+					}
 					console.log('ISOFRAME: Defining slot', adPath, sizes);
-					const slot = googletag
+					googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
 						.addService(googletag.pubads())
 						.setCollapseEmptyDiv(true)
