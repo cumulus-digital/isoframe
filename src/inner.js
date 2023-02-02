@@ -155,22 +155,22 @@ const main = () => {
 
 				console.log('ISOFRAME: Adpath found', adPath);
 
-				// Set up GPT slot
-				googletag.cmd.push(function () {
-					const targetingKeys =
-						window.self.document.defaultView.parent.googletag
-							.pubads()
-							.getTargetingKeys();
-					if (targetingKeys?.length) {
+				targetingKeys = gpa().getTargetingKeys();
+				if (targetingKeys?.length) {
+					googletag.cmd.push(() => {
 						console.log(
 							'ISOFRAME: Setting page-level targeting keys',
 							targetingKeys
 						);
 						targetingKeys.forEach((key) => {
-							const t = googletag.pubads().getTargeting(key);
+							const t = gpa().getTargeting(key);
 							googletag.pubads().setTargeting(key, t);
 						});
-					}
+					});
+				}
+
+				// Set up GPT slot
+				googletag.cmd.push(function () {
 					console.log('ISOFRAME: Defining slot', adPath, sizes);
 					var slot = googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
@@ -180,17 +180,24 @@ const main = () => {
 					googletag.pubads().enableSingleRequest();
 					googletag.enableServices();
 
+					/*
 					const loadedEvent = new Event('gpt.initialized', {
 						bubbles: true,
 						cancelable: true,
 					});
 					window.self.document.defaultView.dispatchEvent(loadedEvent);
+					*/
 
 					if (window.self.document.querySelector('#div-gpt-cube')) {
+						console.log('ISOFRAME: Found slot, calling display.');
 						googletag.display('div-gpt-cube');
 					}
 
 					if (googletag.pubads().isInitialLoadDisabled()) {
+						console.log(
+							'ISOFRAME: Initial load is disabled, refreshing our slot',
+							slot
+						);
 						googletag.pubads().refresh([slot]);
 					}
 				});
