@@ -145,7 +145,10 @@ const main = () => {
 
 				// Set up GPT slot
 				googletag.cmd.push(function () {
-					const targetingKeys = googletag.pubads().getTargetingKeys();
+					const targetingKeys =
+						window.self.document.defaultView.parent.googletag
+							.pubads()
+							.getTargetingKeys();
 					if (targetingKeys?.length) {
 						console.log(
 							'ISOFRAME: Setting page-level targeting keys',
@@ -157,13 +160,16 @@ const main = () => {
 						});
 					}
 					console.log('ISOFRAME: Defining slot', adPath, sizes);
-					googletag
+					var slot = googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
 						.addService(googletag.pubads())
 						.setCollapseEmptyDiv(true)
 						.setTargeting('pos', 'mid');
 					googletag.pubads().enableSingleRequest();
 					googletag.enableServices();
+					if (googletag.pubads().isInitialLoadDisabled()) {
+						googletag.pubads().refresh([slot]);
+					}
 				});
 
 				// Finalize GPT setup
