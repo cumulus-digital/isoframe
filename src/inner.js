@@ -155,7 +155,7 @@ const main = () => {
 
 				console.log('ISOFRAME: Adpath found', adPath);
 
-				targetingKeys = gpa().getTargetingKeys();
+				const targetingKeys = gpa().getTargetingKeys();
 				if (targetingKeys?.length) {
 					googletag.cmd.push(() => {
 						console.log(
@@ -167,6 +167,10 @@ const main = () => {
 							googletag.pubads().setTargeting(key, t);
 						});
 					});
+				} else {
+					console.log(
+						'ISOFRAME: No parent page-level targeting keys found!'
+					);
 				}
 
 				// Set up GPT slot
