@@ -21,8 +21,14 @@ const main = () => {
 			loadScript(
 				'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 				function () {
+					const loadedEvent = new Event('jquery.loaded', {
+						bubbles: true,
+						cancelable: true,
+					});
+					/*
 					const loadedEvent = DOC.createEvent('Event');
 					loadedEvent.initEvent('jquery.loaded', true, true);
+					*/
 					DOC.defaultView.dispatchEvent(loadedEvent);
 					resolve();
 				}
@@ -72,8 +78,14 @@ const main = () => {
 			loadScript(
 				'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js',
 				function (e) {
+					/*
 					var loadedEvent = DOC.createEvent('Event');
 					loadedEvent.initEvent('ifr.loaded', true, true);
+					*/
+					const loadedEvent = new Event('ifr.loaded', {
+						bubbles: true,
+						cancelable: true,
+					});
 					DOC.defaultView.dispatchEvent(loadedEvent);
 					resolve();
 				}
@@ -167,6 +179,17 @@ const main = () => {
 						.setTargeting('pos', 'mid');
 					googletag.pubads().enableSingleRequest();
 					googletag.enableServices();
+
+					const loadedEvent = new Event('gpt.initialized', {
+						bubbles: true,
+						cancelable: true,
+					});
+					window.self.document.defaultView.dispatchEvent(loadedEvent);
+
+					if (window.self.document.querySelector('#div-gpt-cube')) {
+						googletag.display('div-gpt-cube');
+					}
+
 					if (googletag.pubads().isInitialLoadDisabled()) {
 						googletag.pubads().refresh([slot]);
 					}
