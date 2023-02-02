@@ -99,9 +99,12 @@ const main = () => {
 	};
 	DOC.defaultView.INIT_GPT = (networkId, sizes) => {
 		if (!networkId) {
-			console.warn('Attempted to call INIT_GPT without a network ID');
+			console.warn(
+				'ISOFRAME: Attempted to call INIT_GPT without a network ID'
+			);
 			return;
 		}
+		console.log('ISOFRAME: INIT_GPT called.', networkId, sizes);
 		waitForParentGPT().then(
 			() => {
 				const googletag = DOC.defaultView.googletag || { cmd: [] };
@@ -127,15 +130,21 @@ const main = () => {
 				// Make sure we have an adPath
 				if (!adPath) {
 					console.warn(
-						'Could not determine parent adPath, exiting GPT activation.'
+						'ISOFRAME: Could not determine parent adPath, exiting GPT activation.'
 					);
 					return;
 				}
+
+				console.log('ISOFRAME: Adpath found', adPath);
 
 				// Find parent's global targeting keys
 				targetingKeys = gpa().getTargetingKeys();
 				if (targetingKeys?.length) {
 					googletag.cmd.unshift(() => {
+						console.log(
+							'ISOFRAME: Setting page-level targeting keys',
+							targetingKeys
+						);
 						targetingKeys.forEach((key) => {
 							const t = gpa().getTargeting(key);
 							googletag.pubads().setTargeting(key, t);
@@ -167,7 +176,9 @@ const main = () => {
 				})();
 			},
 			function (error) {
-				console.warn('Timed out waiting for parent googletag.');
+				console.warn(
+					'ISOFRAME: Timed out waiting for parent googletag.'
+				);
 			}
 		);
 	};
