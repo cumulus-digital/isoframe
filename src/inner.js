@@ -166,6 +166,7 @@ const main = () => {
 						);
 						targetingKeys.forEach((key) => {
 							const t = gpa().getTargeting(key);
+							console.log('ISOFRAME: Setting ' + key + ': ' + t);
 							window.self.googletag.pubads().setTargeting(key, t);
 						});
 					});
