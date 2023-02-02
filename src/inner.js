@@ -155,6 +155,7 @@ const main = () => {
 
 				// Set up GPT slot
 				googletag.cmd.push(() => {
+					console.log('ISOFRAME: Defining slot', adPath, sizes);
 					const slot = googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
 						.addService(googletag.pubads())
