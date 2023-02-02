@@ -21,14 +21,14 @@ const main = () => {
 			loadScript(
 				'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 				function () {
-					const loadedEvent = new Event('jquery.loaded', {
-						bubbles: true,
-						cancelable: true,
-					});
 					/*
 					const loadedEvent = DOC.createEvent('Event');
 					loadedEvent.initEvent('jquery.loaded', true, true);
 					*/
+					const loadedEvent = new Event('jquery.loaded', {
+						bubbles: true,
+						cancelable: true,
+					});
 					DOC.defaultView.dispatchEvent(loadedEvent);
 					resolve();
 				}
@@ -125,8 +125,10 @@ const main = () => {
 		console.log('ISOFRAME: INIT_GPT called.', networkId, sizes);
 		waitForParentGPT().then(
 			() => {
-				const googletag = DOC.defaultView.googletag || {};
-				googletag.cmd = googletag.cmd || [];
+				//const googletag = DOC.defaultView.googletag || {};
+				//googletag.cmd = googletag.cmd || [];
+				window.self.googletag = window.self.googletag || {};
+				window.self.googletag.cmd = window.self.googletag.cmd || [];
 				const g = parentWindow.googletag;
 				const gpa = g.pubads;
 				let adPath = null;
@@ -157,14 +159,14 @@ const main = () => {
 
 				const targetingKeys = gpa().getTargetingKeys();
 				if (targetingKeys?.length) {
-					googletag.cmd.push(() => {
+					window.self.googletag.cmd.push(function () {
 						console.log(
 							'ISOFRAME: Setting page-level targeting keys',
 							targetingKeys
 						);
 						targetingKeys.forEach((key) => {
 							const t = gpa().getTargeting(key);
-							googletag.pubads().setTargeting(key, t);
+							window.self.googletag.pubads().setTargeting(key, t);
 						});
 					});
 				} else {
@@ -174,7 +176,7 @@ const main = () => {
 				}
 
 				// Set up GPT slot
-				googletag.cmd.push(function () {
+				window.self.googletag.cmd.push(function () {
 					console.log('ISOFRAME: Defining slot', adPath, sizes);
 					var slot = googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
@@ -183,14 +185,6 @@ const main = () => {
 						.setTargeting('pos', 'mid');
 					googletag.pubads().enableSingleRequest();
 					googletag.enableServices();
-
-					/*
-					const loadedEvent = new Event('gpt.initialized', {
-						bubbles: true,
-						cancelable: true,
-					});
-					window.self.document.defaultView.dispatchEvent(loadedEvent);
-					*/
 
 					if (window.self.document.querySelector('#div-gpt-cube')) {
 						console.log('ISOFRAME: Found slot, calling display.');
@@ -205,18 +199,19 @@ const main = () => {
 						googletag.pubads().refresh([slot]);
 					}
 				});
+				window.self.googletag.cmd.push(function () {
+					window.top.console.log('loaded?');
+				});
 
 				// Finalize GPT setup
-				(function () {
-					var gads = window.self.document.createElement('script');
-					gads.async = true;
-					gads.type = 'text/javascript';
-					gads.src =
-						'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
-					var node =
-						window.self.document.getElementsByTagName('script')[0];
-					node.parentNode.insertBefore(gads, node);
-				})();
+				var gads = window.self.document.createElement('script');
+				//gads.async = true;
+				gads.type = 'text/javascript';
+				gads.src =
+					'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+				var node =
+					window.self.document.getElementsByTagName('script')[0];
+				node.parentNode.insertBefore(gads, node);
 			},
 			function (error) {
 				console.warn(
