@@ -107,7 +107,8 @@ const main = () => {
 		console.log('ISOFRAME: INIT_GPT called.', networkId, sizes);
 		waitForParentGPT().then(
 			() => {
-				const googletag = DOC.defaultView.googletag || { cmd: [] };
+				const googletag = DOC.defaultView.googletag || {};
+				googletag.cmd = googletag.cmd || [];
 				const g = parentWindow.googletag;
 				const gpa = g.pubads;
 				let adPath = null;
@@ -140,7 +141,7 @@ const main = () => {
 				// Find parent's global targeting keys
 				targetingKeys = gpa().getTargetingKeys();
 				if (targetingKeys?.length) {
-					googletag.cmd.unshift(() => {
+					googletag.cmd.push(() => {
 						console.log(
 							'ISOFRAME: Setting page-level targeting keys',
 							targetingKeys
@@ -153,7 +154,7 @@ const main = () => {
 				}
 
 				// Set up GPT slot
-				googletag.cmd.unshift(() => {
+				googletag.cmd.push(() => {
 					const slot = googletag
 						.defineSlot(adPath, sizes, 'div-gpt-cube')
 						.addService(googletag.pubads())
