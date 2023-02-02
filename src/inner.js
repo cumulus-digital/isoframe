@@ -97,6 +97,7 @@ const main = () => {
 		};
 		return new Promise(waitingForParentGPT);
 	};
+	var GPT_IS_INITIALIZED = false;
 	DOC.defaultView.INIT_GPT = (networkId, sizes) => {
 		if (!networkId) {
 			console.warn(
@@ -104,6 +105,11 @@ const main = () => {
 			);
 			return;
 		}
+		if (GPT_IS_INITIALIZED) {
+			console.warn('ISOFRAME: INIT_GPT called twice!');
+			return;
+		}
+		GPT_IS_INITIALIZED = true;
 		console.log('ISOFRAME: INIT_GPT called.', networkId, sizes);
 		waitForParentGPT().then(
 			() => {
