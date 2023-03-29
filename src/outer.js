@@ -24,6 +24,7 @@ if (!window._CMLS.isoFrame) {
 					return;
 				}
 
+				TEMPLATE.setAttribute('data-isotemplate', 'tempalte');
 				TEMPLATE.isoTemplate = true;
 
 				const ISOFRAME = DOC.createElement('iframe');
@@ -97,7 +98,10 @@ domReady(function () {
 	const isoTemplates = DOC.querySelectorAll('.isoframe-template');
 	if (isoTemplates && isoTemplates.length) {
 		[].forEach.call(isoTemplates, (TEMPLATE) => {
-			if (TEMPLATE.isoTemplate) {
+			if (
+				TEMPLATE.isoTemplate ||
+				TEMPLATE.getAttribute('data-isotemplate')
+			) {
 				return;
 			}
 			if (!TEMPLATE.getAttribute('id')) {
