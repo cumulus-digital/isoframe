@@ -14,6 +14,10 @@ const SCR_PATH =
 	SCR_URL.origin +
 	SCR_URL.pathname.substring(0, SCR_URL.pathname.lastIndexOf('/'));
 
+DOC.head.append(
+	<link href={`${SCR_URL}/outer.css`} rel="stylesheet" type="text/css" />
+);
+
 const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 	// el might be a selector
 	if (!TEMPLATE?.tagName && typeof TEMPLATE === 'string') {
