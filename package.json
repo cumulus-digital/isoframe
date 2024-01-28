@@ -1,8 +1,7 @@
 {
-  "name": "contest-tools",
-  "version": "1.0.5",
-  "description": "Front-end scripting for CMLS contest posts",
-  "main": "index.js",
+  "name": "isoframe",
+  "version": "2.0.0",
+  "description": "Generates a same-origin iframe to isolate templated content",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --env NODE_ENV=production",
@@ -12,7 +11,10 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@babel/core": "^7.17.10",
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.22.15",
     "@wordpress/postcss-plugins-preset": "^3.8.0",
     "@wordpress/prettier-config": "^1.2.0",
     "babel-loader": "^8.2.5",

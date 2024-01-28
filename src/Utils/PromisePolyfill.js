@@ -1,13 +1,16 @@
-import loadScript from './loadScript.js';
+import { h, Fragment } from 'Utils/h.js';
 
 const DOC = window.self.document;
 
 export default (done) => {
-	if (!window.Promise) {
+	if (window.self.Promise) {
 		return done();
 	}
-	loadScript(
-		'https://polyfill.io/v3/polyfill.min.js?features=Promise',
-		done
+	DOC.body.append(
+		<script
+			src="https://polyfill.io/v3/polyfill.min.js?features=Promise"
+			async
+			onLoad={done}
+		/>
 	);
 };

@@ -6,16 +6,45 @@
 	<body>
 		<link href="http://localhost:9247/outer.css" rel="stylesheet" type="text/css">
 		<script src="http://localhost:9247/outer.js" async></script>
+
+		<p>Template tag:</p>
+		<template class="isoframe-template">
+			<!DOCTYPE html>
+			<html>
+				<head>
+					<title>Testing template tag</title>
+					<script>
+						window.self.googletag = window.self.googletag || {};
+						window.self.googletag.cmd = window.self.googletag.cmd || [];
+						window.self.googletag.cmd.push(() => {
+							INIT_GPT(6717);
+						});
+					</script>
+				</head>
+				<body>
+					<p>this is the content of our template</p>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/2isYuQZMbdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</body>
+			</html>
+		</template>
+
+		<p>Iframe tag:</p>
 		<iframe class="isoframe-template">
 			<!DOCTYPE html>
 			<html>
 				<head>
-					<link href="http://localhost:9247/inner.css" rel="stylesheet" type="text/css">
-					<script src="http://localhost:9247/inner.js" async></script>
+					<title>Testing iframe tag</title>
+					<script>
+						window.self.googletag = window.self.googletag || {};
+						window.self.googletag.cmd = window.self.googletag.cmd || [];
+						window.self.googletag.cmd.push(() => {
+							INIT_GPT(6717);
+						});
+					</script>
 				</head>
 				<body>
 					<p>this is the content of our template</p>
-					<iiframe width="560" height="315" src="https://www.youtube.com/embed/2isYuQZMbdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iiframe>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/2isYuQZMbdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</body>
 			</html>
 		</iframe>

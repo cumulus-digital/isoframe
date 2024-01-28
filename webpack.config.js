@@ -114,11 +114,25 @@ module.exports = (env) => {
 							babelrc: true,
 							configFile: true,
 							presets: [
+								'@babel/preset-react',
 								[
 									'@babel/preset-env',
 									{
+										loose: true,
+										debug: true,
 										useBuiltIns: 'usage',
-										corejs: 3,
+										corejs: require('core-js/package.json')
+											.version,
+									},
+								],
+							],
+							plugins: [
+								['@babel/plugin-transform-runtime'],
+								[
+									'@babel/plugin-transform-react-jsx',
+									{
+										pragma: 'h',
+										pragmaFrag: 'Fragment',
 									},
 								],
 							],
