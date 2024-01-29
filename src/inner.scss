@@ -71,8 +71,10 @@ img {
 
 [data-iframe-height] {
 	display: block;
+	position: relative;
 	overflow: hidden;
 	height: 0px;
+	width: 0px;
 }
 
 #onetrust-consent-sdk {

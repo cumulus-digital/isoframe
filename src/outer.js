@@ -204,11 +204,12 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		waitForCondition(() => window.self.iFrameResize, 5000).then(
 			() => {
 				const ifr_options = {
+					log: true,
 					checkOrigin: false,
-					sizeWidth: false,
-					tolerance: 10,
-					minSize: 100,
-					eightCalculationMethod: HAS_TAGGED_EL
+					//sizeWidth: false,
+					//tolerance: 0,
+					//minSize: 100,
+					heightCalculationMethod: HAS_TAGGED_EL
 						? 'taggedElement'
 						: 'bodyOffset',
 					onInit: function (ifr) {
