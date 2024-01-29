@@ -69,6 +69,12 @@ img {
 	object-fit: cover;
 }
 
+[data-iframe-height] {
+	display: block;
+	overflow: hidden;
+	height: 0px;
+}
+
 #onetrust-consent-sdk {
 	display: none;
 }

@@ -56,6 +56,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				title={title}
 				frameBorder="0"
 				width="100%"
+				height="1px"
 				class="CMLS_CCC_IFRAME"
 				scrolling="no"
 				allowTransparency="yes"
@@ -170,20 +171,6 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			);
 		}
 
-		// Ensure iFrameResizer content script is in template
-		if (
-			!TEMPLATE_DOC.querySelector(
-				'script[src*="iframeResizer.contentWindow"]'
-			)
-		) {
-			TEMPLATE_DOC.head.append(
-				<script
-					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.contentWindow.min.js"
-					async={true}
-				/>
-			);
-		}
-
 		// Ensure GPT is available inside iframe
 		const PARENT_GPT = DOC.querySelector('script[src*="gpt.js"]');
 		if (
@@ -206,7 +193,9 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		}
 
 		// Set up iFrameResizer
-		const HAS_TAGGED_EL = TEMPLATE_DOC.querySelector('data-iframe-height');
+		const HAS_TAGGED_EL = TEMPLATE_DOC.querySelector(
+			'[data-iframe-height]'
+		);
 		const ifr_src =
 			'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.6/iframeResizer.min.js';
 		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
@@ -214,23 +203,26 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		}
 		waitForCondition(() => window.self.iFrameResize, 5000).then(
 			() => {
-				window.self.iFrameResize(
-					{
-						checkOrigin: false,
-						sizeWidth: false,
-						tolerance: 10,
-						minSize: 100,
-						eightCalculationMethod: HAS_TAGGED_EL
-							? 'taggedElement'
-							: 'bodyOffset',
-						onInit: function (ifr) {
-							const ev = new Event('cmls-ifr-init');
-							ifr.dispatchEvent(ev);
-							DOC.dispatchEvent(ev);
-						},
+				const ifr_options = {
+					checkOrigin: false,
+					sizeWidth: false,
+					tolerance: 10,
+					minSize: 100,
+					eightCalculationMethod: HAS_TAGGED_EL
+						? 'taggedElement'
+						: 'bodyOffset',
+					onInit: function (ifr) {
+						const ev = new Event('cmls-ifr-init');
+						ifr.dispatchEvent(ev);
+						DOC.dispatchEvent(ev);
 					},
-					`#${id}`
+				};
+				console.log(
+					'ISOFRAME: Initializing iFrameResize',
+					id,
+					ifr_options
 				);
+				window.self.iFrameResize(ifr_options, '#' + id);
 			},
 			() => {
 				console.error('iFrameResizer failed to load.');
@@ -238,6 +230,20 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				ISOFRAME.setAttribute('scrolling', 'auto');
 			}
 		);
+
+		// Ensure iFrameResizer content script is in template
+		if (
+			!TEMPLATE_DOC.querySelector(
+				'script[src*="iframeResizer.contentWindow"]'
+			)
+		) {
+			TEMPLATE_DOC.head.append(
+				<script
+					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.contentWindow.min.js"
+					async={true}
+				/>
+			);
+		}
 
 		TEMPLATE.after(ISOFRAME);
 		const IDOC = ISOFRAME.contentDocument;
