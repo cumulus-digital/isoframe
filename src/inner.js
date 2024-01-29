@@ -108,17 +108,15 @@ domReady(() => {
 			'script[src*="https://connect.facebook.net/en_US/sdk.js"]'
 		)
 	) {
+		document.body.append(<div id="fb-root"></div>);
 		document.body.append(
-			<>
-				<div id="fb-root"></div>
-				<script
-					async
-					defer
-					crossorigin="anonymous"
-					src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"
-					nonce="VHFIi8TO"
-				></script>
-			</>
+			<script
+				async
+				defer
+				crossorigin="anonymous"
+				src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"
+				nonce="VHFIi8TO"
+			></script>
 		);
 	}
 });
@@ -138,7 +136,6 @@ domReady(() => {
 				src="https://widget.bandsintown.com/main.min.js"
 				async
 				defer
-				crossorigin="anonymous"
 			/>
 		);
 	}
