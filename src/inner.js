@@ -1,6 +1,7 @@
 import './inner.scss';
 import { h, Fragment } from 'Utils/h.js';
 import domReady from 'Utils/domReady.js';
+import waitForCondition from 'Utils/waitForCondition';
 
 const DOC = window.self.document;
 const parentWindow = DOC.defaultView.parent;
@@ -20,7 +21,7 @@ const main = () => {
 		window.self.googletag = window.self.googletag || {};
 		window.self.googletag.cmd = window.self.googletag.cmd || [];
 		window.self.googletag.cmd.push(() => {
-			const parent_googletag = parentWindow.googletag;
+			const parent_googletag = window.self.parent.googletag;
 			if (!parent_googletag) {
 				throw new Error('Could not retrieve parent googletag!');
 			}

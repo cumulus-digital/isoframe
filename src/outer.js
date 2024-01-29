@@ -189,15 +189,20 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		if (
 			!TEMPLATE.getAttribute('no-gpt') &&
 			!TEMPLATE_DOC.querySelector('script[src*="gpt.js"]') &&
-			window.self?.googletag &&
 			PARENT_GPT
 		) {
-			TEMPLATE_DOC.head.append(
-				<script
-					src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
-					async={true}
-				/>
-			);
+			waitForCondition(() => ISOFRAME?.contentDocument?.head).then(() => {
+				window.self.googletag = window.self.googletag || {};
+				window.self.googletag.cmd = window.self.googletag.cmd || [];
+				window.self.googletag.cmd.push(() => {
+					ISOFRAME.contentDocument.head.append(
+						<script
+							src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
+							async={true}
+						/>
+					);
+				});
+			});
 		}
 
 		// Set up iFrameResizer
