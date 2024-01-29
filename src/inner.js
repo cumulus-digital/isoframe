@@ -1,26 +1,11 @@
 import './inner.scss';
 import { h, Fragment } from 'Utils/h.js';
-import PromisePolyfill from 'Utils/PromisePolyfill.js';
 import domReady from 'Utils/domReady.js';
 
 const DOC = window.self.document;
 const parentWindow = DOC.defaultView.parent;
 
-// If template used an iframe, then iframes in the template need to use
-// a fake iframe tag with a different name.
-DOC.createElement('iiframe');
-
 const main = () => {
-	const Promise = window.Promise;
-
-	// Transform fake iframes
-	domReady(() => {
-		const ifrs = document.querySelectorAll('iiframe');
-		ifrs.forEach((ifr) => {
-			ifr.tagName = 'iframe';
-		});
-	});
-
 	window.self.INIT_GPT = (networkId) => {
 		if (!networkId) {
 			throw new Error(
@@ -84,7 +69,7 @@ const main = () => {
 		});
 	};
 };
-PromisePolyfill(main);
+main();
 
 // Handle Twitter embeds
 domReady(() => {
