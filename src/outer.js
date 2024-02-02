@@ -56,7 +56,6 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				title={title}
 				frameBorder="0"
 				width="100%"
-				height="1px"
 				class="CMLS_CCC_IFRAME"
 				scrolling="no"
 				allowTransparency="yes"
@@ -240,9 +239,8 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		};
 
 		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
-			DOC.body.append(
-				<script src={ifr_src} async={true} onLoad={init_ifr} />
-			);
+			console.log('ISOFRAME: Injecting iFrameResizer script');
+			DOC.body.append(<script src={ifr_src} onLoad={init_ifr} />);
 		} else {
 			init_ifr();
 		}
