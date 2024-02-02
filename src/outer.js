@@ -56,7 +56,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				title={title}
 				frameBorder="0"
 				width="100%"
-				class="CMLS_CCC_IFRAME"
+				class="CMLS_CCC_IFRAME isoframe-processed"
 				scrolling="no"
 				allowTransparency="yes"
 				style="width: 100%"
