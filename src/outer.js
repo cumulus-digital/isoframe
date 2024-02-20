@@ -238,7 +238,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			window.self.iFrameResize(ifr_options, '#' + id);
 			// Force size refresh when window loads
 			window.self.addEventListener('load', () => {
-				if (parentIFrame in window.self) {
+				if ('parentIFrame' in window.self) {
 					window.self.parentIFrame.size();
 				}
 			});
