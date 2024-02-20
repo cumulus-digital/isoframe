@@ -236,6 +236,12 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			};
 			console.log('ISOFRAME: Initializing iFrameResize', id, ifr_options);
 			window.self.iFrameResize(ifr_options, '#' + id);
+			// Force size refresh when window loads
+			window.self.addEventListener('load', () => {
+				if (parentIFrame in window.self) {
+					window.self.parentIFrame.size();
+				}
+			});
 		};
 
 		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
