@@ -68,8 +68,8 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			TEMPLATE.tagName.toLowerCase() === 'template' &&
 			TEMPLATE?.content?.children
 		) {
-			TEMPLATE_CONTENT = [].map
-				.call(TEMPLATE.content.children, (e) => e.outerHTML)
+			TEMPLATE_CONTENT = [...TEMPLATE.content.children]
+				.map((e) => e.outerHTML)
 				.join('\n');
 		} else if (TEMPLATE.innerText) {
 			TEMPLATE_CONTENT = TEMPLATE.innerText;
@@ -208,14 +208,12 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		TEMPLATE.after(ISOFRAME);
 		const IDOC = ISOFRAME.contentDocument;
 		IDOC.open();
-		IDOC.write([].map.call(TEMPLATE_DOC.children, (e) => e.outerHTML));
+		IDOC.write([...TEMPLATE_DOC.children].map((e) => e.outerHTML));
 		IDOC.close();
 		TEMPLATE.remove();
 
 		// Set up iFrameResizer
-		const HAS_TAGGED_EL = TEMPLATE_DOC.querySelector(
-			'[data-iframe-height]'
-		);
+		DOC.body.append();
 		const ifr_src =
 			'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.min.js';
 		const init_ifr = () => {
@@ -246,9 +244,16 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 
 		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
 			console.log('ISOFRAME: Injecting iFrameResizer script');
-			DOC.body.append(<script src={ifr_src} async onLoad={init_ifr} />);
+			DOC.body.append(
+				<script
+					id="iFrameResizer4210"
+					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.min.js"
+					async
+					onload={init_ifr}
+				></script>
+			);
 		} else {
-			init_ifr();
+			waitForCondition(() => window.self.iFrameResize).then(init_ifr);
 		}
 	});
 };
@@ -259,7 +264,7 @@ window._CMLS.isoFrame = isoFrame;
 domReady(() => {
 	const isoTemplates = DOC.querySelectorAll('.isoframe-template');
 	if (isoTemplates && isoTemplates.length) {
-		[].forEach.call(isoTemplates, (TEMPLATE) => {
+		[...isoTemplates].forEach((TEMPLATE) => {
 			if (
 				TEMPLATE.isoTemplate ||
 				TEMPLATE.getAttribute('data-isoframe-processed')
