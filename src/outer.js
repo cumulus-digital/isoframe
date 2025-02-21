@@ -3,7 +3,7 @@ import { h, Fragment } from 'Utils/h.js';
 import domReady from 'Utils/domReady.js';
 import waitForCondition from 'Utils/waitForCondition';
 
-console.log('ISOFRAME');
+console.log('ISOFRAME v2');
 
 const DOC = window.self.document;
 const CURRENT_SCRIPT = DOC.currentScript;
@@ -199,7 +199,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		) {
 			TEMPLATE_DOC.head.append(
 				<script
-					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.contentWindow.min.js"
+					src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.11/js/iframeResizer.contentWindow.js"
 					async={true}
 				/>
 			);
@@ -214,8 +214,6 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 
 		// Set up iFrameResizer
 		DOC.body.append();
-		const ifr_src =
-			'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.min.js';
 		const init_ifr = () => {
 			const ifr_options = {
 				//log: true,
@@ -226,13 +224,17 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				//heightCalculationMethod: HAS_TAGGED_EL
 				//	? 'taggedElement'
 				//	: 'bodyOffset',
-				onReady: function (ifr) {
+				onInit: function (ifr) {
 					const ev = new Event('cmls-ifr-init');
 					ifr.dispatchEvent(ev);
 					DOC.dispatchEvent(ev);
 				},
 			};
-			console.log('ISOFRAME: Initializing iFrameResize', id, ifr_options);
+			window.top.console.log(
+				'ISOFRAME: Initializing iFrameResize',
+				id,
+				ifr_options
+			);
 			window.self.iFrameResize(ifr_options, '#' + id);
 			// Force size refresh when window loads
 			window.self.addEventListener('load', () => {
@@ -242,18 +244,28 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			});
 		};
 
-		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
+		if (!DOC.querySelector('script[src*="iframe-resizer"]')) {
 			console.log('ISOFRAME: Injecting iFrameResizer script');
 			DOC.body.append(
 				<script
-					id="iFrameResizer4210"
-					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.min.js"
+					src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.11/js/iframeResizer.min.js"
 					async
-					onload={init_ifr}
+					onload={() => {
+						window.top.console.log('WTF');
+						init_ifr();
+					}}
 				></script>
 			);
 		} else {
-			waitForCondition(() => window.self.iFrameResize).then(init_ifr);
+			console.log(
+				'ISOFRAME: iFrameResizer script already loaded, waiting for init.',
+				window.self.iFrameResize
+			);
+			waitForCondition(() => window.self.iFrameResize, 5000, 100)
+				.then(() => init_ifr())
+				.catch(() =>
+					console.log('Timed out waiting for iFrameResizer')
+				);
 		}
 	});
 };
