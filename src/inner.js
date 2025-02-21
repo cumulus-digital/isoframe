@@ -72,34 +72,6 @@ const main = () => {
 };
 main();
 
-// Handle Twitter embeds
-domReady(() => {
-	if (
-		document.querySelector('.twitter-tweet,.twitter-timeline') &&
-		!document.querySelector(
-			'script[src*="platform.twitter.com/widgets.js"]'
-		)
-	) {
-		window.self.twttr = (function (d, s, id) {
-			var js,
-				fjs = d.getElementsByTagName(s)[0],
-				t = window.twttr || {};
-			if (d.getElementById(id)) return t;
-			js = d.createElement(s);
-			js.id = id;
-			js.src = 'https://platform.twitter.com/widgets.js';
-			fjs.parentNode.insertBefore(js, fjs);
-
-			t._e = [];
-			t.ready = function (f) {
-				t._e.push(f);
-			};
-
-			return t;
-		})(DOC, 'script', 'twitter-wjs');
-	}
-});
-
 // Handle Facebook embeds
 domReady(() => {
 	if (
@@ -114,7 +86,7 @@ domReady(() => {
 				async
 				defer
 				crossorigin="anonymous"
-				src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"
+				src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v22.0"
 				nonce="VHFIi8TO"
 			></script>
 		);
@@ -136,6 +108,7 @@ domReady(() => {
 				src="https://widget.bandsintown.com/main.min.js"
 				async
 				defer
+				crossorigin="anonymous"
 			/>
 		);
 	}

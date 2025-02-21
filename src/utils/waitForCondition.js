@@ -15,6 +15,9 @@ export default function waitForCondition(
 	function waiting(resolve, reject) {
 		const checked = check();
 		if (checked) {
+			if (checked === 'CANCEL_WAIT') {
+				return;
+			}
 			resolve(checked);
 		} else if (Date.now() - start >= timeout) {
 			reject(new Error('Timed out waiting for ref'));

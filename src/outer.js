@@ -199,7 +199,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 		) {
 			TEMPLATE_DOC.head.append(
 				<script
-					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.contentWindow.min.js"
+					src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.contentWindow.min.js"
 					async={true}
 				/>
 			);
@@ -217,7 +217,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			'[data-iframe-height]'
 		);
 		const ifr_src =
-			'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.6/iframeResizer.min.js';
+			'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/5.3.3/iframeResizer.min.js';
 		const init_ifr = () => {
 			const ifr_options = {
 				//log: true,
@@ -225,10 +225,10 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				//sizeWidth: false,
 				//tolerance: 0,
 				//minSize: 100,
-				heightCalculationMethod: HAS_TAGGED_EL
-					? 'taggedElement'
-					: 'bodyOffset',
-				onInit: function (ifr) {
+				//heightCalculationMethod: HAS_TAGGED_EL
+				//	? 'taggedElement'
+				//	: 'bodyOffset',
+				onReady: function (ifr) {
 					const ev = new Event('cmls-ifr-init');
 					ifr.dispatchEvent(ev);
 					DOC.dispatchEvent(ev);
@@ -246,7 +246,7 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 
 		if (!DOC.querySelector('script[src*="iframeResizer.min.js"]')) {
 			console.log('ISOFRAME: Injecting iFrameResizer script');
-			DOC.body.append(<script src={ifr_src} onLoad={init_ifr} />);
+			DOC.body.append(<script src={ifr_src} async onLoad={init_ifr} />);
 		} else {
 			init_ifr();
 		}
