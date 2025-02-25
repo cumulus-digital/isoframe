@@ -205,6 +205,10 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 			);
 		}
 
+		const HAS_TAGGED_EL = !!TEMPLATE_DOC.querySelector(
+			'[data-iframe-height]'
+		);
+
 		TEMPLATE.after(ISOFRAME);
 		const IDOC = ISOFRAME.contentDocument;
 		IDOC.open();
