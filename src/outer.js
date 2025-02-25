@@ -221,9 +221,9 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 				//sizeWidth: false,
 				//tolerance: 0,
 				//minSize: 100,
-				//heightCalculationMethod: HAS_TAGGED_EL
-				//	? 'taggedElement'
-				//	: 'bodyOffset',
+				heightCalculationMethod: HAS_TAGGED_EL
+					? 'taggedElement'
+					: 'bodyOffset',
 				onInit: function (ifr) {
 					const ev = new Event('cmls-ifr-init');
 					ifr.dispatchEvent(ev);
@@ -251,7 +251,6 @@ const isoFrame = (TEMPLATE, title = 'Isolated page content') => {
 					src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.11/js/iframeResizer.min.js"
 					async
 					onload={() => {
-						window.top.console.log('WTF');
 						init_ifr();
 					}}
 				></script>
